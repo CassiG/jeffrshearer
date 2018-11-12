@@ -638,8 +638,6 @@ a:hover, a:active {
 --------------------------------------------------------------*/
 .main-navigation {
 	clear: both;
-	display: block;
-	float: left;
 	width: 100%;
 }
 
@@ -907,8 +905,8 @@ object {
 }
 
 /* Make sure logo link wraps around logo image. */
-.custom-logo-link {
-	display: inline-block;
+.main-navigation a.custom-logo-link {
+	display: none;
 }
 
 /*--------------------------------------------------------------
@@ -981,4 +979,18 @@ object {
 
 .gallery-caption {
 	display: block;
+}
+
+@media (min-width: 768px) {
+	/*--------------------------------------------------------------
+	# Media
+	--------------------------------------------------------------*/
+
+	/* Make sure logo link wraps around logo image. */
+	.main-navigation a.custom-logo-link {
+		display: inline-block;
+		max-width: 300px;
+		width: 100%;
+	}
+
 }
