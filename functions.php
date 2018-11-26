@@ -121,8 +121,8 @@ add_action( 'widgets_init', 'jeff_shearer_portfolio_widgets_init' );
  */
 function jeff_shearer_portfolio_scripts() {
 	wp_enqueue_style( 'jeff-shearer-portfolio-style', get_stylesheet_uri() );
-	wp_enqueue_style( 'resume', get_stylesheet_directory_uri() . 'css/resume.css');
-	wp_enqueue_style( 'resume', get_stylesheet_directory_uri() . 'css/resume.min.css');
+	wp_enqueue_style( 'resume', get_stylesheet_directory_uri() . '/css/resume.css');
+	wp_enqueue_style( 'resume', get_stylesheet_directory_uri() . '/css/resume.min.css');
 	wp_enqueue_script( 'jeff-shearer-portfolio-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20151215', true );
 	wp_enqueue_script( 'jeff-shearer-portfolio-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20151215', true );
 	wp_enqueue_script( 'resume-js', get_template_directory_uri() . '/js/resume.js', array(), '20151215', true );
@@ -160,3 +160,12 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+/* Add classes to logo. */
+add_filter( 'get_custom_logo', 'change_logo_class' );
+
+function change_logo_class( $html ) {
+    $html = str_replace( 'custom-logo', 'img-fluid img-profile rounded-circle mx-auto mb-2', $html );
+		$html = str_replace( 'custom-logo-link', 'hello', $html );
+
+    return $html;
+}
