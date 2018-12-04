@@ -165,7 +165,13 @@ add_filter( 'get_custom_logo', 'change_logo_class' );
 
 function change_logo_class( $html ) {
     $html = str_replace( 'custom-logo', 'img-fluid img-profile rounded-circle mx-auto mb-2', $html );
-		$html = str_replace( 'custom-logo-link', 'hello', $html );
 
     return $html;
 }
+
+function custom_menu_css($item_output, $item, $depth, $args) {
+    $classes     = 'nav-link';
+    $item_output = preg_replace('/<a /', '<a class="'.$classes.'"', $item_output, 1);
+    return $item_output;
+ }
+add_filter('walker_nav_menu_start_el', 'custom_menu_css', 10, 4);

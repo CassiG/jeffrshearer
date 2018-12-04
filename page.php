@@ -15,7 +15,7 @@
 get_header();
 ?>
 
-	<div id="primary" class="content-area">
+	<div id="primary" class="content-area resume-section p-3 p-lg-5 d-flex d-column">
 		<main id="main" class="site-main">
 
 		<?php

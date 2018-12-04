@@ -35,24 +35,26 @@
 			if ( is_front_page() && is_home() ) :
 				?>
 		</span>
-		</span>
-
-				<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" class="navbar-brand"><?php bloginfo( 'name' ); ?></a></h1>
-				<?php
-			else :
-				?>
-				<p class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
-			<?php endif; ?>
+	</span>
+	<span class="site-title site-name mb-0">
+		<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" class="navbar-brand"><?php bloginfo( 'name' ); ?></a>
+	</span>
+	<?php else : ?>
+	<p class="site-title site-name mb-0"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></p>
+	s<?php endif; ?>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
 			<?php
-			wp_nav_menu( array(
+			$args = array(
 				'theme_location' => 'menu-1',
 				'menu_id'        => 'primary-menu',
-			) );
+				'container' => 'ul',
+				'menu_class' => 'navbar-nav',
+			);
+			wp_nav_menu($args);
 			?>
 			</div>
 		</nav><!-- #site-navigation -->
