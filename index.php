@@ -1,59 +1,50 @@
 <?php
 /**
- * The main template file
- *
- * This is the most generic template file in a WordPress theme
- * and one of the two required files for a theme (the other being style.css).
- * It is used to display a page when nothing more specific matches a query.
- * E.g., it puts together the home page when no home.php file exists.
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
- * @package jeff-shearer-portfolio
+ * @package Make
  */
 
 get_header();
+
+// Section Header
+ob_start();
+make_breadcrumb();
+$section_header = trim( ob_get_clean() );
+
+global $post;
 ?>
 
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main">
+<?php ttfmake_maybe_show_sidebar( 'left' ); ?>
 
+<main id="site-main" class="site-main" role="main">
+<?php if ( have_posts() ) : ?>
+
+	<?php if ( $section_header ) : ?>
+	<header class="section-header">
+		<?php echo $section_header; ?>
+	</header>
+	<?php endif; ?>
+
+	<?php while ( have_posts() ) : the_post(); ?>
 		<?php
-		if ( have_posts() ) :
+		/**
+		 * Allow for changing the template partial.
+		 *
+		 * @since 1.2.3.
+		 *
+		 * @param string     $type    The default template type to use.
+		 * @param WP_Post    $post    The post object for the current post.
+		 */
+		$template_type = apply_filters( 'make_template_content_archive', 'archive', $post );
+		get_template_part( 'partials/content', $template_type ); ?>
+	<?php endwhile; ?>
 
-			if ( is_home() && ! is_front_page() ) :
-				?>
-				<header>
-					<h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
-				</header>
-				<?php
-			endif;
+	<?php get_template_part( 'partials/nav', 'paging' ); ?>
 
-			/* Start the Loop */
-			while ( have_posts() ) :
-				the_post();
+<?php else : ?>
+	<?php get_template_part( 'partials/content', 'none' ); ?>
+<?php endif; ?>
+</main>
 
-				/*
-				 * Include the Post-Type-specific template for the content.
-				 * If you want to override this in a child theme, then include a file
-				 * called content-___.php (where ___ is the Post Type name) and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', get_post_type() );
+<?php ttfmake_maybe_show_sidebar( 'right' ); ?>
 
-			endwhile;
-
-			the_posts_navigation();
-
-		else :
-
-			get_template_part( 'template-parts/content', 'none' );
-
-		endif;
-		?>
-
-		</main><!-- #main -->
-	</div><!-- #primary -->
-
-<?php
-get_sidebar();
-get_footer();
+<?php get_footer(); ?>

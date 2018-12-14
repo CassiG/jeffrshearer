@@ -1,53 +1,45 @@
 <?php
 /**
- * The template for displaying archive pages
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
- * @package jeff-shearer-portfolio
+ * @package Make
  */
 
 get_header();
+global $post;
 ?>
 
-	<div id="primary" class="content-area">
-		<main id="main" class="site-main">
+<?php ttfmake_maybe_show_sidebar( 'left' ); ?>
 
-		<?php if ( have_posts() ) : ?>
+<main id="site-main" class="site-main" role="main">
+<?php if ( have_posts() ) : ?>
 
-			<header class="page-header">
-				<?php
-				the_archive_title( '<h1 class="page-title">', '</h1>' );
-				the_archive_description( '<div class="archive-description">', '</div>' );
-				?>
-			</header><!-- .page-header -->
+	<header class="section-header">
+		<?php make_breadcrumb(); ?>
+		<?php get_template_part( 'partials/section', 'title' ); ?>
+		<?php get_template_part( 'partials/section', 'description' ); ?>
+	</header>
 
-			<?php
-			/* Start the Loop */
-			while ( have_posts() ) :
-				the_post();
-
-				/*
-				 * Include the Post-Type-specific template for the content.
-				 * If you want to override this in a child theme, then include a file
-				 * called content-___.php (where ___ is the Post Type name) and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', get_post_type() );
-
-			endwhile;
-
-			the_posts_navigation();
-
-		else :
-
-			get_template_part( 'template-parts/content', 'none' );
-
-		endif;
+	<?php while ( have_posts() ) : the_post(); ?>
+		<?php
+		/**
+		 * Allow for changing the template partial.
+		 *
+		 * @since 1.2.3.
+		 *
+		 * @param string     $type    The default template type to use.
+		 * @param WP_Post    $post    The post object for the current post.
+		 */
+		$template_type = apply_filters( 'make_template_content_archive', 'archive', $post );
+		get_template_part( 'partials/content', $template_type );
 		?>
+	<?php endwhile; ?>
 
-		</main><!-- #main -->
-	</div><!-- #primary -->
+	<?php get_template_part( 'partials/nav', 'paging' ); ?>
 
-<?php
-get_sidebar();
-get_footer();
+<?php else : ?>
+	<?php get_template_part( 'partials/content', 'none' ); ?>
+<?php endif; ?>
+</main>
+
+<?php ttfmake_maybe_show_sidebar( 'right' ); ?>
+
+<?php get_footer(); ?>

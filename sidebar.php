@@ -1,17 +1,10 @@
 <?php
 /**
- * The sidebar containing the main widget area
- *
- * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
- *
- * @package jeff-shearer-portfolio
+ * @package Make
  */
 
-if ( ! is_active_sidebar( 'sidebar-1' ) ) {
-	return;
-}
-?>
-
-<aside id="secondary" class="widget-area">
-	<?php dynamic_sidebar( 'sidebar-1' ); ?>
-</aside><!-- #secondary -->
+/**
+ * This file is just a fallback in case a plugin calls for a sidebar
+ * that doesn't exist. sidebar-right.php is the default sidebar.
+ */
+get_sidebar( 'right' );

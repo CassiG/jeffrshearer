@@ -1,75 +1,55 @@
 <?php
 /**
- * The template for displaying comments
- *
- * This is the template that displays the area of the page that contains both the current comments
- * and the comment form.
- *
- * @link https://developer.wordpress.org/themes/basics/template-hierarchy/
- *
- * @package jeff-shearer-portfolio
+ * @package Make
  */
 
-/*
- * If the current post is protected by a password and
- * the visitor has not yet entered the password we will
- * return early without loading the comments.
- */
-if ( post_password_required() ) {
+if ( post_password_required() ) :
 	return;
-}
+endif;
 ?>
 
 <div id="comments" class="comments-area">
-
-	<?php
-	// You can start editing here -- including this comment!
-	if ( have_comments() ) :
+	<?php if ( have_comments() ) : ?>
+	<h3 class="comments-title">
+		<?php
+		printf(
+			// Translators: this string appears as the title of the Comments section of a post.
+			esc_html( _n( 'One comment', '%1$s comments', get_comments_number(), 'make' ) ),
+			number_format_i18n( get_comments_number() )
+		);
 		?>
-		<h2 class="comments-title">
-			<?php
-			$jeff_shearer_portfolio_comment_count = get_comments_number();
-			if ( '1' === $jeff_shearer_portfolio_comment_count ) {
-				printf(
-					/* translators: 1: title. */
-					esc_html__( 'One thought on &ldquo;%1$s&rdquo;', 'jeff-shearer-portfolio' ),
-					'<span>' . get_the_title() . '</span>'
-				);
-			} else {
-				printf( // WPCS: XSS OK.
-					/* translators: 1: comment count number, 2: title. */
-					esc_html( _nx( '%1$s thought on &ldquo;%2$s&rdquo;', '%1$s thoughts on &ldquo;%2$s&rdquo;', $jeff_shearer_portfolio_comment_count, 'comments title', 'jeff-shearer-portfolio' ) ),
-					number_format_i18n( $jeff_shearer_portfolio_comment_count ),
-					'<span>' . get_the_title() . '</span>'
-				);
-			}
-			?>
-		</h2><!-- .comments-title -->
+	</h3>
 
-		<?php the_comments_navigation(); ?>
+		<?php if ( get_comment_pages_count() > 1 ) : ?>
+		<nav id="comment-nav-above" class="comment-navigation" role="navigation">
+			<span class="screen-reader-text"><?php esc_html_e( 'Comment navigation', 'make' ); ?></span>
+			<?php paginate_comments_links(); ?>
+		</nav>
+		<?php endif; ?>
 
 		<ol class="comment-list">
 			<?php
 			wp_list_comments( array(
-				'style'      => 'ol',
-				'short_ping' => true,
+				'avatar_size' => 38,
+				'callback'    => 'ttfmake_comment'
 			) );
 			?>
-		</ol><!-- .comment-list -->
+		</ol>
 
-		<?php
-		the_comments_navigation();
+		<?php if ( get_comment_pages_count() > 1 ) : ?>
+		<nav id="comment-nav-below" class="comment-navigation" role="navigation">
+			<span class="screen-reader-text"><?php esc_html_e( 'Comment navigation', 'make' ); ?></span>
+			<?php paginate_comments_links(); ?>
+		</nav>
+		<?php endif; ?>
 
-		// If comments are closed and there are comments, let's leave a little note, shall we?
-		if ( ! comments_open() ) :
-			?>
-			<p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'jeff-shearer-portfolio' ); ?></p>
-			<?php
-		endif;
+	<?php endif; ?>
 
-	endif; // Check for have_comments().
+	<?php if ( ! comments_open() && '0' != get_comments_number() && post_type_supports( get_post_type(), 'comments' ) ) : ?>
+	<p class="no-comments">
+		<?php esc_html_e( 'Comments are closed.', 'make' ); ?>
+	</p>
+	<?php endif; ?>
 
-	comment_form();
-	?>
-
-</div><!-- #comments -->
+	<?php comment_form(); ?>
+</div>
